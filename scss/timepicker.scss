@@ -1,0 +1,122 @@
+$tc-r: 28;
+$tc-g: 21;
+$tb-b: 100;
+
+.wrtp-wrapper{
+    position: relative;
+    width: 100%;
+    height: 2em;
+
+    .wrtp-inner-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        cursor: pointer;
+        // border: 2px solid rgb($tc-r, $tc-g, $tb-b);
+        border-radius: 0.3em;
+        overflow: hidden;
+        margin-top: 1em;
+        
+        span {
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: monospace;
+            color: #000;
+        }
+    
+        button {
+            width: 30px;
+            height: 100%;
+            border: none;
+            background: rgb($tc-r, $tc-g, $tb-b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            
+            div{
+                position: relative;
+                width: 20px;
+                height: 18px;
+                border-radius: 100%;
+                background: none;
+                border: 2px solid #fff;
+
+                &::before, &::after{
+                    content: '';
+                    position: absolute;
+                    height: 2px;
+                    background: #fff;
+                    top: 50%;
+                    left: 50%;
+                }
+                
+                &::before{
+                    width: 7px;
+                    transform-origin: left center;
+                    transform: rotate(270deg);
+                }
+                
+                &::after{
+                    width: 4px;
+                }
+            }    
+        }
+    }
+
+    .wrtp-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% - 2px);
+        left: 0;
+        width: 100%;
+        height: 204px;
+        overflow: none;
+        border: 2px solid rgb($tc-r, $tc-g, $tb-b);
+        border-radius: 0.3em;
+        background: #fff;
+        color: #000;
+
+        &.show {
+            display: flex;
+        }
+
+        .wrtp-dropdown-hrs,
+        .wrtp-dropdown-mins {
+            width: 50%;
+            height: 100%;
+            overflow: scroll;
+            text-align: center;
+            scroll-behavior: mandatory;
+            scroll-snap-points-y: repeat(50px);
+            scroll-snap-type: y mandatory;
+
+            div {
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                scroll-snap-align: start;
+                
+                &.selected,
+                &.selected:hover {
+                    background: rgba($tc-r, $tc-g, $tb-b, 1);
+                    color: #fff;
+                }
+
+                &:hover {
+                    background: rgba($tc-r, $tc-g, $tb-b, 0.3);
+                    color: #000;
+                }
+            }
+        }
+    }
+}

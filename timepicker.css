@@ -1,0 +1,150 @@
+.wrtp-wrapper {
+  position: relative;
+  width: 100%;
+  height: 2em;
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 0.3em;
+  overflow: hidden;
+  margin-top: 1em;
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper span {
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  font-family: monospace;
+  color: #000;
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper button {
+  width: 30px;
+  height: 100%;
+  border: none;
+  background: #1c1564;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper button div {
+  position: relative;
+  width: 20px;
+  height: 18px;
+  border-radius: 100%;
+  background: none;
+  border: 2px solid #fff;
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper button div::before, .wrtp-wrapper .wrtp-inner-wrapper button div::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  background: #fff;
+  top: 50%;
+  left: 50%;
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper button div::before {
+  width: 7px;
+  -webkit-transform-origin: left center;
+          transform-origin: left center;
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg);
+}
+
+.wrtp-wrapper .wrtp-inner-wrapper button div::after {
+  width: 4px;
+}
+
+.wrtp-wrapper .wrtp-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 0;
+  width: 100%;
+  height: 204px;
+  overflow: none;
+  border: 2px solid #1c1564;
+  border-radius: 0.3em;
+  background: #fff;
+  color: #000;
+}
+
+.wrtp-wrapper .wrtp-dropdown.show {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-hrs,
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-mins {
+  width: 50%;
+  height: 100%;
+  overflow: scroll;
+  text-align: center;
+  scroll-behavior: mandatory;
+  -ms-scroll-snap-points-y: repeat(50px);
+      scroll-snap-points-y: repeat(50px);
+  -ms-scroll-snap-type: y mandatory;
+      scroll-snap-type: y mandatory;
+}
+
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-hrs div,
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-mins div {
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  scroll-snap-align: start;
+}
+
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-hrs div.selected, .wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-hrs div.selected:hover,
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-mins div.selected,
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-mins div.selected:hover {
+  background: #1c1564;
+  color: #fff;
+}
+
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-hrs div:hover,
+.wrtp-wrapper .wrtp-dropdown .wrtp-dropdown-mins div:hover {
+  background: rgba(28, 21, 100, 0.3);
+  color: #000;
+}
