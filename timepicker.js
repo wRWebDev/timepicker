@@ -1,5 +1,5 @@
 /*
- *  JQuery TimePicker v1.0
+ *  JQuery TimePicker v1.1.0
  * 
  *  Author:     @WRWebDev
  *  Copyright:  © Will Robertson 2021
