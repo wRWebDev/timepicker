@@ -1,18 +1,26 @@
 /*
-    @WRWebDev - JQuery TimePicker v1.0
-    © Will Robertson 2021 - MIT License
-    https://github.com/
-    
-    Loads in place of the HTML markup:
-    <input type="time" name="{pick a name}" (value="{hh:mm}" optional) />
+ *  JQuery TimePicker v1.0
+ * 
+ *  Author:     @WRWebDev
+ *  Copyright:  © Will Robertson 2021
+ *  License:    MIT
+ *  Repo:       https://github.com/wRWebDev/timepicker
 */
 
-/*
+/*    
+    Loads in place of the HTML markup:
+    <input type="time" name="{pick a name}" (value="{hh:mm}" opt.) (step="{x}" opt.) />
+
     ! USER OPTIONS
-    Default - 12:00 (midday)
-    Must be integers!
-    This is overwritten if a value is specified in the HTML
+    > Default Time - 12:00 (midday)
+        defaultTime = { hours: x (int), mins: x (int) }
+        This is overwritten if a valid value attribute is specified in the markup
+    > Minute Increments
+        minInc = x (int)
+        This is overwritten if a valid step attribute is specified in the markup
 */
+
+// ! USER OPTIONS
 let defaultTime = { hours: 12, mins: 0 }
 const minInc = 15
 
@@ -21,10 +29,16 @@ const twoDigitPad = val => ('00' + val).slice(-2)
 
 // Arrays to generate dropdown options
 const hours = [ ...Array(24).keys() ]
-const mins = [ ...Array(4).keys() ]
+const mins = [ ...Array(60 / minInc).keys() ]
+
+// For reducing amount of code written
+const timePositions = ['hrs', 'mins']
+
+// Keeps track of if a timepicker is showing or not
+let wrtpShowing = false
 
 // The markup is replaced with this content - takes the name as a string
-const replacementContent = (name, time) => `
+const replacementContent = ({name = String, time = Object}) => `
     <div class="wrtp-wrapper">
         <input 
             type="text"
@@ -46,23 +60,21 @@ const replacementContent = (name, time) => `
 `
 
 // Creates the dropdown menus
-const populateoptions = () => {
-    $('.wrtp-dropdown-hrs').html(
+const populateoptions = wrapper => {
+    wrapper.find('.wrtp-dropdown-hrs').html(
         hours.map(i => `
             <div 
-                class="wrtp-dropdown-selector-hrs ${i === defaultTime.hours ? 'selected' : null}" 
+                class="wrtp-dropdown-selector-hrs${i === defaultTime.hours ? ' selected' : ''}" 
                 data-val="${i}"
             >
                 ${twoDigitPad(i)}
             </div>
         `)
     )
-    // User can choose in the config options at the top
-    // What minute increments should be included (default, every 15 mins)
-    $('.wrtp-dropdown-mins').html(
+    wrapper.find('.wrtp-dropdown-mins').html(
         mins.map(i => `
             <div 
-                class="wrtp-dropdown-selector-mins ${(i * minInc) === defaultTime.mins ? 'selected' : null}" 
+                class="wrtp-dropdown-selector-mins${(i * minInc) === defaultTime.mins ? ' selected' : ''}" 
                 data-val="${i * minInc}"
             >
                 ${twoDigitPad(i * minInc)}
@@ -75,18 +87,16 @@ const bindDropdownOptions = wrapper => {
 
     const changeValue = (wrapper, selection, pos) => {
         let value = wrapper.children('input').val().split(':')
-        value[pos] = ('00' + selection.attr('data-val')).slice(-2)
+        value[pos] = twoDigitPad(selection.attr('data-val'))
         wrapper.children('input').val(value.join(':'))
         wrapper.find('span').html(wrapper.children('input').val())
     }
 
-    const timePositions = ['hrs', 'mins']
-
     for(let i = 0; i < 2; i++){
-        $(`.wrtp-dropdown-selector-${timePositions[i]}`).each(function(){
+        wrapper.find(`.wrtp-dropdown-selector-${timePositions[i]}`).each(function(){
             $(this).bind('click', () => {
                 changeValue(wrapper, $(this), i)
-                $(`.wrtp-dropdown-selector-${timePositions[i]}`).each(function(){
+                wrapper.find(`.wrtp-dropdown-selector-${timePositions[i]}`).each(function(){
                     $(this).removeClass('selected')
                 })
                 $(this).addClass('selected')
@@ -96,39 +106,10 @@ const bindDropdownOptions = wrapper => {
 
 }
 
-let wrtpShowing = false
-let timepickers = $('input[type=time]')
-timepickers.each(function(i){
+/* Show when clicked on */
+const show = me => {me.children('.wrtp-dropdown')[0].classList.add('show')}
 
-    /* If there's a set value, use that as default  */
-    if($(this).val().split(':').length === 2){
-        let newDefault = $(this).val().split(':')
-        defaultTime = {
-            hours: parseInt(newDefault[0]),
-            mins: parseInt(newDefault[1])
-        }
-    }
-
-    /* Replace this with my timepicker module */
-    $(this).css({display: 'none'})
-    $(this).parent().append(replacementContent($(this).attr('name'), defaultTime))
-    const me = $(this).siblings('.wrtp-wrapper')
-    populateoptions()
-    bindDropdownOptions(me)
-
-    /* Populate the drop-down menu */
-    me.bind('click', () => {
-        !wrtpShowing ? show(me) : null
-        wrtpShowing = true
-    })
-
-    /* Show when clicked on */
-    const show = me => {
-        me.children('.wrtp-dropdown')[0].classList.add('show')
-    }
-
-})
-
+/* Hide when clicked off */
 $(document).on('click', e => {
     e.preventDefault()
     if(!$(e.target).parents('.wrtp-wrapper').length){
@@ -137,4 +118,30 @@ $(document).on('click', e => {
         })
         wrtpShowing = false
     }
+})
+
+let timepickers = $('input[type=time]')
+timepickers.each(function(){
+
+    /* Replace the input with this timepicker module */
+    $(this).css({display: 'none'})
+    $(this).parent().append(replacementContent({
+        name: $(this).attr('name'), 
+        time: $(this).val().split(':').length === 2
+                ? { 
+                    hours: parseInt($(this).val().split(':')[0]),
+                    mins: parseInt($(this).val().split(':')[1])
+                }
+                : defaultTime
+    }))
+    const me = $(this).siblings('.wrtp-wrapper')
+    populateoptions(me)
+    bindDropdownOptions(me)
+
+
+    me.bind('click', () => {
+        !wrtpShowing ? show(me) : null
+        wrtpShowing = true
+    })
+
 })

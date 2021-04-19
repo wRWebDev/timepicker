@@ -1,3 +1,4 @@
+// Define theme color in RGB
 $tc-r: 28;
 $tc-g: 21;
 $tb-b: 100;
@@ -84,6 +85,7 @@ $tb-b: 100;
         border-radius: 0.3em;
         background: #fff;
         color: #000;
+        z-index: 10;
 
         &.show {
             display: flex;
